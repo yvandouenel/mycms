@@ -5,30 +5,69 @@ class Route
 
     private static $routes = array();
 
-    public static function add($regexp, $method = 'get', $model_name = 'single_node', $view_name = 'view_standard', $permission = "all")
+    public static function add($pattern,
+                               $method = 'get',
+                               $view_name = 'view_standard',
+                               $model_name = 'node',
+                               $model_parameters = [],
+                               $permission = "all")
     {
         array_push(self::$routes, array(
-            'regexp' => $regexp,
+            'pattern' => $pattern,
             'method' => $method,
-            'model_name' => $model_name,
             'view_name' => $view_name,
+            'model_name' => $model_name,
+            'model_parameters' => $model_parameters,
             'permission' => $permission,
         ));
     }
 
-
-    public static function run($basepath = '/')
+    public static function run()
     {
 
-        // Parse current url
+        // Parse l'URL
         $parsed_url = parse_url($_SERVER['REQUEST_URI']);
 
         $path = isset($parsed_url['path']) ? $parsed_url['path'] : '/';
-        echo "chemin : ";
-        var_dump($path);
+
+        // Récupère la méthode
+        $method = $_SERVER['REQUEST_METHOD'];
+
+        // vérifie si la route existe
+        $path_match_found = false;
+        $route_match_found = false;
+        foreach (self::$routes as $route) {
+            // on compare d'abord la méthode
+            if(strtolower($route['method']) == strtolower($method)) {
+                // on compare ensuite l'expression régulière
+                if(preg_match($route['pattern'], $path)) {
+                    $path_match_found = true;
+
+                    // Cas de l'affichage d'un node ou de l'affichage du formulaire de modification d'un node
+                    if(($route["model_name"] == "node" ||
+                        $route["model_name"] == "node_edit_form" ) &&
+                        $route["method"] == "get") {
+                        preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
+                        if (isset($matches[1][0])) {
+                            $route["model_parameters"]["nid"] = $matches[1][0];
+                            $route["model_parameters"]["edited"] = false;
+                        }
+
+                        // Cas de la soumission du formulaire de modification d'un node
+                    } else if($route["model_name"] == "node_submited_form" && $route["method"] == "post") {
+                        $route["model_parameters"]["nid"] = $_POST["nid"];
+                        $route["model_parameters"]["edited"] = true;
+                    }
+                    return $route;
+                    break;
+                }
+            }
+        }
+        // si on ne trouve pas le chemin, on retourne null
+        return null;
 
        /* // Get current request method
-        $method = $_SERVER['REQUEST_METHOD'];
+
 
         $path_match_found = false;
 
