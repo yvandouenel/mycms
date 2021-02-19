@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
+<?php
+require_once('standard/head.php');
+?>
+<?php
+require_once('standard/header.php');
+?>
+    <main class="container">
+        <h1>
+            <?= $GLOBALS['data']->title; ?>
+        </h1>
+
         <?php
-        if(!empty($GLOBALS['data']->seo_title)) echo $GLOBALS['data']->seo_title;
-        else echo $GLOBALS['data']->title;
+        echo $GLOBALS['data']->body;
         ?>
-    </title>
-</head>
-<body>
-<h1>
-    <?= $GLOBALS['data']->title; ?>
-</h1>
-<main>
-    <?php
-    echo $GLOBALS['data']->body;
-    ?>
-</main>
-</body>
-</html>
+    </main>
+
+<?php
+require_once('standard/footer.php');
+?>

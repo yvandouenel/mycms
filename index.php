@@ -13,6 +13,9 @@ $route = Route::run();
 // si la route est trouvée, on va chercher la donnée dans le modèle et on affiche la vue correspondante
 if($route) {
     Model::createConnection();
+    if($route["model_name"] == "front" && $route["method"] == "get") {
+        $GLOBALS['data'] = Model::getNodeByPath("/");
+    }
     // Affichage d'un node
     if($route["model_name"] == "node" && $route["method"] == "get") {
         $GLOBALS['data'] = Model::getNode($route["model_parameters"]["nid"]);

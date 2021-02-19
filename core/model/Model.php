@@ -47,6 +47,19 @@ class Model
             echo "Pb de requête", $e->getMessage();
         }
     }
+    public static function getNodeByPath($path)
+    {
+        try {
+            $data = [
+                'path' => $path
+            ];
+            $req = self::$pdo->prepare('SELECT * FROM node WHERE path = :path');
+            $req->execute($data);
+            return $req->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo "Pb de requête", $e->getMessage();
+        }
+    }
 
 
 }
