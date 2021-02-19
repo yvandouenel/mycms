@@ -1,3 +1,7 @@
+myCMS 1.1.1 - 2020-02-19
+----------------------------
+Ajout d'un système de routage et de récupération des données via mysql
+
 myCMS 1.0 - 2020-02-8
 ----------------------------
 un simple fichier index.php
