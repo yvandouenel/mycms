@@ -1,0 +1,72 @@
+main {
+    margin-top: 20px;
+}
+main:after {
+    content: "";
+    display: block;
+    clear: both;
+    margin-bottom: 20px;
+}
+/* Bulle de message ***************************************************************************************************/
+.bubble-success{
+    background: #28a745;
+    color: #fff;
+    padding: 7px 15px;
+    border-radius: 3px;
+    width: 350px;
+    position: -webkit-sticky;
+    position: absolute;
+    top: 90vh;
+    right: 10px;
+    animation-duration: 1s;
+    animation-name: slidein;
+}
+
+.bubble-success::after {
+    content: "";
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #28a745;
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+}
+.bubble-warning {
+    background: #ffc107;
+    color: #fff;
+    padding: 7px 15px;
+    border-radius: 3px;
+    width: 350px;
+    position: -webkit-sticky;
+    position: absolute;
+    top: 90vh;
+    right: 10px;
+    animation-duration: 1s;
+    animation-name: slidein;
+}
+
+.bubble-warning::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #ffc107;
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    
+}
+
+
+@keyframes slidein {
+    from {
+        right: 40vw;
+        top: 40vh
+    }
+
+    to {
+        right: 10px;
+        top: 90vh;
+    }
+}
