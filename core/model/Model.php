@@ -22,13 +22,17 @@ class Model
             $GLOBALS['info']['type'] = "success";
             // Set sessions
             if(!isset($_SESSION)) {
-                if(session_start()) $_SESSION["login"] = true;
-                else echo "Problème de session";
+                if(session_start()) {
+                    $_SESSION["login"] = true;
+                    return true;
+                }
+                else return false;
             }
         } else {
             $GLOBALS['login'] = false;
             $GLOBALS['info']['msg'] = "Problème d'identification";
             $GLOBALS['info']['type'] = "warning";
+            return false;
         }
     }
 
@@ -38,6 +42,7 @@ class Model
             if(session_start()) unset($_SESSION['login']);
         }
     }
+    
 
     public static function getNode($node_id)
     {
