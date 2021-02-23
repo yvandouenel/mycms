@@ -1,11 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page d'accueil</title>
-</head>
-<body>
-<h1>Ceci est la page d'accueil</h1>
-</body>
-</html>
+<?php
+require_once('standard/head.php');
+?>
+<?php
+require_once('standard/header.php');
+?>
+    <main class="container">
+        <h1>
+            <?= $GLOBALS['data']->title; ?>
+        </h1>
+
+        <?php
+        echo $GLOBALS['data']->body;
+        ?>
+    </main>
+
+<?php
+require_once('standard/footer.php');
+?>
