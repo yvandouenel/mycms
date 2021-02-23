@@ -58,6 +58,13 @@ class Route
                         $route["model_parameters"]["nid"] = $_POST["nid"];
                         $route["model_parameters"]["edited"] = true;
                     }
+                        // Dans le cas de l'appel du login on vérifie qu'il n'y a pas déjà eu une erreur
+                    else if($route["model_name"] == "login" && $route["method"] == "get") {
+                        preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
+                        if (isset($matches[1][0])) {
+                            $route["error"] = true;
+                        }
+                    }
                     return $route;
                     break;
                 }
