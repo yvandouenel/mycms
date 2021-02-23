@@ -1,3 +1,7 @@
+myCMS 1.1.2 - 2020-02-23
+----------------------------
+Changement d'architecture avec le répertoire public, gestion des messages d'information, gestion de l'ajout d'une image, gestion simplistes des droits via les session."
+
 myCMS 1.1.1 - 2020-02-19
 ----------------------------
 Ajout d'un système de routage et de récupération des données via mysql
