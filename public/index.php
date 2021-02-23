@@ -4,12 +4,14 @@ require_once('../core/model/Model.php');
 
 // Ajout des routes
 Route::add('~^/$~',"get","front","front");
-Route::add('~^/login$~',"get","login","login");
+Route::add('~^/login(/error)?$~',"get","login","login");
 Route::add('~^/logout$~',"get","front","logout");
 Route::add('~^/login$~',"post","login_result","login");
 Route::add('~^/node/([0-9]+)/?$~',"get","node","node");
 Route::add('~^/node/([0-9]+)/edit$~',"get","node_edit_form","node_edit_form");
 Route::add('~^/node/[0-9]+/edited$~',"post","node_edit_form","node_submited_form");
+
+
 
 // Récupération de la route
 $route = Route::run();
@@ -29,10 +31,19 @@ if($route) {
     else if($route["model_name"] == "login" && $route["method"] == "get") {
         $admin_view_folder = "admin/";
         $GLOBALS['title'] = "Identification";
+        if(isset($route["error"]) && $route["error"]) {
+            $GLOBALS['login'] = false;
+            $GLOBALS['info']['msg'] = "Problème d'identification";
+            $GLOBALS['info']['type'] = "warning";
+        }
+
     }
     else if($route["model_name"] == "login" && $route["method"] == "post") {
         $admin_view_folder = "admin/";
-        Model::getUser();
+        if( !Model::getUser()) {
+            header('Location: /login/error');
+            die();
+        }
     }
     // logout
     else if($route["model_name"] == "logout" && $route["method"] == "get") {
