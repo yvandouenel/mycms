@@ -9,8 +9,25 @@ Route::add('~^/logout$~',"get","front","logout");
 Route::add('~^/login$~',"post","login_result","login");
 Route::add('~^/node/([0-9]+)/?$~',"get","node","node");
 Route::add('~^/node/([0-9]+)/edit$~',"get","node_edit_form","node_edit_form");
-Route::add('~^/node/[0-9]+/edited$~',"post","node_edit_form","node_submited_form");
 
+Route::add('~^/node/add$~',"get","node_add_form","node_add");
+Route::add('~^/node/add$~',"post","list_node_admin","node_add");
+
+Route::add('~^/node/([0-9]+)/delete$~',"get","list_node_admin","node_delete");
+
+Route::add('~^/node/[0-9]+/edited$~',"post","node_edit_form","node_submited_form");
+Route::add('~^/list-node-admin$~',"get","list_node_admin","list_node_admin");
+
+// récupération des données à afficher pour l'administrateur
+if(!isset($_SESSION)) {
+    if(session_start()) {
+        if(isset($_SESSION['login'])) {
+            Model::getAdminMenu();
+        }
+    }
+} else if(isset($_SESSION['login'])) {
+    Model::getAdminMenu();
+}
 
 
 // Récupération de la route
@@ -50,6 +67,16 @@ if($route) {
         Model::logoutUser();
         $GLOBALS['data'] = Model::getNodeByPath("/");
     }
+    // Affichage du formulaire d'ajout d'un node
+    else if($route["model_name"] == "node_add" && $route["method"] == "get") {
+        $admin_view_folder = "admin/";
+    }
+    // Affichage de la liste des nodes après l'ajout d'un node
+    else if($route["model_name"] == "node_add" && $route["method"] == "post") {
+        Model::addNode();
+        $GLOBALS['data'] = Model::getNodes();
+        $admin_view_folder = "admin/";
+    }
     // Affichage du formulaire de modification d'un node
     else if($route["model_name"] == "node_edit_form" && $route["method"] == "get") {
         $GLOBALS['data'] = Model::getNode($route["model_parameters"]["nid"]);
@@ -59,6 +86,17 @@ if($route) {
     else if($route["model_name"] == "node_submited_form" && $route["method"] == "post") {
         Model::setNode();
         $GLOBALS['data'] = Model::getNode($route["model_parameters"]["nid"]);
+        $admin_view_folder = "admin/";
+    }
+    // Affichage de la liste des nodes pour administration après suppression
+    else if($route["model_name"] == "node_delete" && $route["method"] == "get") {
+        Model::deleteNode($route["model_parameters"]["nid"]);
+        $GLOBALS['data'] = Model::getNodes();
+        $admin_view_folder = "admin/";
+    }
+    // Affichage de la liste des nodes pour administration
+    else if($route["model_name"] == "list_node_admin" && $route["method"] == "get") {
+        $GLOBALS['data'] = Model::getNodes();
         $admin_view_folder = "admin/";
     }
     require_once('../core/view/' . $admin_view_folder . $route["view_name"] .'.php');
