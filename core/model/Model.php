@@ -20,6 +20,7 @@ class Model
             $GLOBALS['login'] = true;
             $GLOBALS['info']['msg'] = "Identification réussie";
             $GLOBALS['info']['type'] = "success";
+
             // Set sessions
             if (!isset($_SESSION)) {
                 if (session_start()) {

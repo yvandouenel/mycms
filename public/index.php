@@ -21,7 +21,7 @@ Route::add('~^/list-node-admin$~',"get","list_node_admin","list_node_admin");
 // récupération des données à afficher pour l'administrateur
 if(!isset($_SESSION)) {
     if(session_start()) {
-        if(isset($_SESSION['login'])) {
+        if(isset($_SESSION['login']) && $_SESSION['login']) {
             Model::getAdminMenu();
         }
     }
@@ -60,6 +60,8 @@ if($route) {
         if( !Model::getUser()) {
             header('Location: /login/error');
             die();
+        } else {
+            Model::getAdminMenu();
         }
     }
     // logout
