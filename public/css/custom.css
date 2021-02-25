@@ -8,18 +8,20 @@ main:after {
     margin-bottom: 20px;
 }
 /* Bulle de message ***************************************************************************************************/
+#global-bubble {
+    width: 350px;
+    position: absolute;
+    bottom: 2vh;
+    right: 10px;
+    animation-duration: 1s;
+    animation-name: slidein;
+}
 .bubble-success{
     background: #28a745;
     color: #fff;
     padding: 7px 15px;
     border-radius: 3px;
-    width: 350px;
-    position: -webkit-sticky;
-    position: absolute;
-    top: 90vh;
-    right: 10px;
-    animation-duration: 1s;
-    animation-name: slidein;
+    position: relative;
 }
 
 .bubble-success::after {
@@ -36,13 +38,7 @@ main:after {
     color: #fff;
     padding: 7px 15px;
     border-radius: 3px;
-    width: 350px;
-    position: -webkit-sticky;
-    position: absolute;
-    top: 90vh;
-    right: 10px;
-    animation-duration: 1s;
-    animation-name: slidein;
+    position: relative;
 }
 
 .bubble-warning::after {
@@ -62,11 +58,11 @@ main:after {
 @keyframes slidein {
     from {
         right: 40vw;
-        top: 40vh
+        bottom: 15vh
     }
 
     to {
         right: 10px;
-        top: 90vh;
+        bottom: 2vh;
     }
 }

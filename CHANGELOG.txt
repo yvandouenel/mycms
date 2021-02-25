@@ -1,3 +1,8 @@
+myCMS 1.1.3 - 2020-02-25
+----------------------------
+Amélioration du système de messages, de connexion et d'architecture
+
+
 myCMS 1.1.2 - 2020-02-23
 ----------------------------
 Changement d'architecture avec le répertoire public, gestion des messages d'information, gestion de l'ajout d'une image, gestion simplistes des droits via les session."
