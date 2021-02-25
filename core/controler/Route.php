@@ -5,6 +5,25 @@ class Route
 
     private static $routes = array();
 
+    public static function addAllRoutes() {
+        self::add('~^/$~',"get","front","front");
+
+        // Routes de login et de logout
+        self::add('~^/login$~',"get","admin/login","login");
+        self::add('~^/logout$~',"get","front","logout");
+        self::add('~^/login$~',"post","admin/login_result","login");
+
+        // Routes des nodes en visualisation et en administration
+        self::add('~^/node/([0-9]+)/?$~',"get","node","node");
+        self::add('~^/node/([0-9]+)/edit$~',"get","admin/node_edit_form","node_edit_form");
+        self::add('~^/node/add$~',"get","admin/node_add_form","node_add");
+        self::add('~^/node/add$~',"post","admin/list_node_admin","node_add");
+        self::add('~^/node/([0-9]+)/delete$~',"get","admin/list_node_admin","node_delete");
+        self::add('~^/node/[0-9]+/edited$~',"post","admin/node_edit_form","node_submited_form");
+        self::add('~^/list-node-admin$~',"get","admin/list_node_admin","list_node_admin");
+    }
+
+
     public static function add($pattern,
                                $method = 'get',
                                $view_name = 'view_standard',
@@ -63,13 +82,8 @@ class Route
                         if (isset($matches[1][0])) {
                             $route["model_parameters"]["nid"] = $matches[1][0];
                         }
-                    } // Dans le cas de l'appel du login on vérifie qu'il n'y a pas déjà eu une erreur
-                    else if ($route["model_name"] == "login" && $route["method"] == "get") {
-                        preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
-                        if (isset($matches[1][0])) {
-                            $route["error"] = true;
-                        }
                     }
+
                     return $route;
                     break;
                 }
@@ -77,71 +91,6 @@ class Route
         }
         // si on ne trouve pas le chemin, on retourne null
         return null;
-
-        /* // Get current request method
-
-
-         $path_match_found = false;
-
-         $route_match_found = false;
-
-         foreach (self::$routes as $route) {
-
-         // If the method matches check the path
-
-         // Add basepath to matching string
-             if ($basepath != '' && $basepath != '/') {
-                 $route['expression'] = '(' . $basepath . ')' . $route['expression'];
-             }
-
-         // Add 'find string start' automatically
-             $route['expression'] = '^' . $route['expression'];
-
-         // Add 'find string end' automatically
-             $route['expression'] = $route['expression'] . '$';
-
-         // echo $route['expression'].'<br/>';
-
-         // Check path match
-             if (preg_match('#' . $route['expression'] . '#', $path, $matches)) {
-
-                 $path_match_found = true;
-
-         // Check method match
-                 if (strtolower($method) == strtolower($route['method'])) {
-
-                     array_shift($matches);// Always remove first element. This contains the whole string
-
-                     if ($basepath != '' && $basepath != '/') {
-                         array_shift($matches);// Remove basepath
-                     }
-
-                     call_user_func_array($route['function'], $matches);
-
-                     $route_match_found = true;
-                     // Do not check other routes
-                     break;
-                 }
-             }
-         }
-
-         // No matching route was found
-         if (!$route_match_found) {
-
-         // But a matching path exists
-             if ($path_match_found) {
-                 header("HTTP/1.0 405 Method Not Allowed");
-                 if (self::$methodNotAllowed) {
-                     call_user_func_array(self::$methodNotAllowed, array($path, $method));
-                 }
-             } else {
-                 header("HTTP/1.0 404 Not Found");
-                 if (self::$pathNotFound) {
-                     call_user_func_array(self::$pathNotFound, array($path));
-                 }
-             }
-
-         }*/
 
     }
 
