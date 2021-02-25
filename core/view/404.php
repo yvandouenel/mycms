@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erreur 404</title>
-</head>
-<body>
-<h1>Désolé la route n'a pas été trouvée</h1>
-</body>
-</html>
+<?php include_once __DIR__ . '/standard/head.php'?>
+<?php include_once __DIR__ . '/standard/header.php'?>
+<section class="container">
+    <h1 class="alert alert-danger mt-5">Désolé la route n'a pas été trouvée</h1>
+    <p>Il s'agit d'une erreur 404</p>
+    <p>Merci de faire un copier/coller de l'URL et de l'envoyer à info@coopernet.fr</p>
+
+</section>
+<?php include_once __DIR__ . '/standard/footer.php'?>

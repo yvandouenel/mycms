@@ -13,13 +13,23 @@ class Model
             echo "Pb de connexion à la base de données ", $e->getMessage();
         }
     }
+    public static function getAdminInfo() {
+        if(!isset($_SESSION)) {
+            if(session_start()) {
+                if(isset($_SESSION['login']) && $_SESSION['login']) {
+                    self::getAdminMenu();
+                }
+            }
+        } else if(isset($_SESSION['login'])) {
+            self::getAdminMenu();
+        }
+    }
 
     public static function getUser()
     {
         if ($_POST["login"] == "yvan" && $_POST["pwd"] == "123") {
             $GLOBALS['login'] = true;
-            $GLOBALS['info']['msg'] = "Identification réussie";
-            $GLOBALS['info']['type'] = "success";
+            $GLOBALS['infos'] [] = ["msg" => "Identification réussie", "type" => "success"];
 
             // Set sessions
             if (!isset($_SESSION)) {
@@ -33,8 +43,7 @@ class Model
             }
         } else {
             $GLOBALS['login'] = false;
-            $GLOBALS['info']['msg'] = "Problème d'identification";
-            $GLOBALS['info']['type'] = "warning";
+            $GLOBALS['infos'] [] = ["msg" => "Problème d'identification", "type" => "warning"];
             return false;
         }
     }
@@ -76,9 +85,9 @@ class Model
             $uploadfile = $uploaddir . basename($_FILES['image']['name']);
 
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadfile)) {
-               return "Fichier uploadé";
+               return ["msg" => "Fichier uploadé", "type" => "success"];
             } else {
-                return "Problème de téléchargement de l'image";
+                return ["msg" => "Problème de téléchargement de l'image", "type" => "warning"];
             }
         } else return "";
     }
@@ -104,11 +113,12 @@ class Model
                 image = :image, 
                 path = :path');
             $req->execute($data);
-            $GLOBALS['info']["msg"] = "Insertion d'un node. <br>" . $msg_img;
-            $GLOBALS['info']["type"] = "success";
+            $GLOBALS['infos'] [] = ["msg" => "Insertion d'un node. <br>", "type" => "success"];
+            $GLOBALS['infos'] [] = $msg_img;
+
         } catch (PDOException $e) {
-            $GLOBALS['info']["msg"] = "Problème d'insertion en base de données : " . $e->getMessage() . "<br>" . $msg_img;
-            $GLOBALS['info']["type"] = "warning";
+            $GLOBALS['infos'] [] = ["msg" => "Problème d'insertion en base de données : " . $e->getMessage(), "type" => "warning"];
+            $GLOBALS['infos'] [] = $msg_img;
         }
     }
 
@@ -120,11 +130,9 @@ class Model
             ];
             $req = self::$pdo->prepare('DELETE FROM node WHERE nid = :nid');
             $req->execute($data);
-            $GLOBALS['info']["msg"] = "Suppression d'un node.";
-            $GLOBALS['info']["type"] = "success";
+            $GLOBALS['infos'] [] = ["msg" => "Suppression d'un node.", "type" => "success"];
         } catch (PDOException $e) {
-            $GLOBALS['info']["msg"] = "Problème de suppresion d'un node en base de données : " . $e->getMessage();
-            $GLOBALS['info']["type"] = "warning";
+            $GLOBALS['infos'] [] = ["msg" => "Problème d'insertion d'un node en base de données : " . $e->getMessage(), "type" => "warning"];
         }
     }
 
@@ -147,11 +155,9 @@ class Model
         $uploadfile = $uploaddir . basename($_FILES['image']['name']);
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadfile)) {
-            $GLOBALS['info']["msg"] = "Fichier uploadé";
-            $GLOBALS['info']["type"] = "success";
+            $GLOBALS['infos'] [] = ["msg" => "Fichier uploadé", "type" => "success"];
         } else {
-            $GLOBALS['info']["msg"] = "Problème de téléchargement";
-            $GLOBALS['info']["type"] = "warning";
+            $GLOBALS['infos'] [] = ["msg" => "Problème de téléchargement", "type" => "warning"];
         }
 
 
