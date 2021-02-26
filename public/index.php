@@ -5,7 +5,8 @@ require_once('../core/model/Model.php');
 /**
  * Ajout des routes
  */
-Route::addAllRoutes();
+Model::createConnection();
+Route::addAllRoutes(Model::getNodes());
 
 /**
  * Récupération des données à afficher pour l'administrateur via la session
@@ -21,7 +22,6 @@ $route = Route::run();
  * Si la route est trouvée, on va chercher la donnée dans le modèle et on affiche la vue correspondante
  */
 if ($route) {
-    Model::createConnection();
     $admin_view_folder = "";
     if ($route["model_name"] == "front" && $route["method"] == "get") {
         $GLOBALS['data'] = Model::getNodeByPath("/");
@@ -29,7 +29,14 @@ if ($route) {
     // Affichage d'un node
     if ($route["model_name"] == "node" && $route["method"] == "get") {
         $GLOBALS['data'] = Model::getNode($route["model_parameters"]["nid"]);
-    } // Affichage du formulaire de login
+
+        // si ce node a un alias et qu'il n'est pas utilisé, on redirige
+      if($GLOBALS['data']->path && !preg_match($route["pattern"], "/" . $GLOBALS['data']->path)) {
+        header("location:/" . $GLOBALS['data']->path);
+      }
+    }
+
+    // Affichage du formulaire de login
     else if ($route["model_name"] == "login" && $route["method"] == "get") {
         $admin_view_folder = "admin/";
         $GLOBALS['title'] = "Identification";
