@@ -15,7 +15,7 @@
     <header class="container text-light">
         <?php if(!isset($_SESSION['login']))  : ?>
             <section style="float: right;">
-                <a class="text-light" href="/login">Indentification</a>
+                <a class="text-light" href="/login">Identification</a>
             </section>
         <?php endif ?>
         <a class="text-light" href="/">En-tête avec le logo et le menu principal</a>
