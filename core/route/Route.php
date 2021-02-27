@@ -34,14 +34,14 @@ class Route {
   public static function add($pattern,
                              $method = 'get',
                              $view_name = 'view_standard',
-                             $model_name = 'node',
+                             $action = 'view',
                              $model_parameters = [],
                              $permission = "all") {
     array_push(self::$routes, [
       'pattern' => $pattern,
       'method' => $method,
       'view_name' => $view_name,
-      'model_name' => $model_name,
+      'action' => $action,
       'model_parameters' => $model_parameters,
       'permission' => $permission,
     ]);
@@ -68,8 +68,8 @@ class Route {
           $path_match_found = TRUE;
 
           // Cas de l'affichage d'un node ou de l'affichage du formulaire de modification d'un node
-          if (($route["model_name"] == "node" ||
-              $route["model_name"] == "node_edit_form") &&
+          if (($route["action"] == "node" ||
+              $route["action"] == "node_edit_form") &&
             $route["method"] == "get" && count($route["model_parameters"]) == 0) {
             preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
             if (isset($matches[1][0])) {
@@ -80,12 +80,12 @@ class Route {
             // Cas de la soumission du formulaire de modification d'un node
           }
           else {
-            if ($route["model_name"] == "node_submited_form" && $route["method"] == "post") {
+            if ($route["action"] == "node_submited_form" && $route["method"] == "post") {
               $route["model_parameters"]["nid"] = $_POST["nid"];
               $route["model_parameters"]["edited"] = TRUE;
             } // Cas de la suppression d'un node
             else {
-              if ($route["model_name"] == "node_delete" && $route["method"] == "get") {
+              if ($route["action"] == "node_delete" && $route["method"] == "get") {
                 preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
                 if (isset($matches[1][0])) {
                   $route["model_parameters"]["nid"] = $matches[1][0];

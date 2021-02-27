@@ -35,7 +35,7 @@ main:after {
 }
 .bubble-warning {
     background: #ffc107;
-    color: #fff;
+    color: black !important;
     padding: 7px 15px;
     border-radius: 3px;
     position: relative;
