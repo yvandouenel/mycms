@@ -164,18 +164,26 @@ class Model {
         'title' => $_POST['title'],
         'seo_title' => $_POST['seo_title'],
         'body' => $_POST['body'],
-        'image' => $_FILES['image']['name'],
         'path' => $_POST['path'],
       ];
-
-      $req = self::$pdo->prepare('UPDATE node SET 
+      if(basename($_FILES['image']['name'])) {
+        $data['image'] = $_FILES['image']['name'];
+        $req = self::$pdo->prepare('UPDATE node SET 
                 title = :title, 
-                seo_title = :seo_title, 
                 seo_title = :seo_title, 
                 body = :body, 
                 image = :image, 
                 path = :path   
                 WHERE nid = :nid');
+      } else {
+        $req = self::$pdo->prepare('UPDATE node SET 
+                title = :title, 
+                seo_title = :seo_title, 
+                body = :body, 
+                path = :path   
+                WHERE nid = :nid');
+      }
+
       $req->execute($data);
       //var_dump($_POST['image']);
 

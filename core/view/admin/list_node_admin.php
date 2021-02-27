@@ -8,6 +8,7 @@ if(!isset($_SESSION)) {
 }
 ?>
     <main class="container">
+
         <?php if(isset($_SESSION['login']) && $_SESSION['login'])  : ?>
         <h2>Liste des nodes</h2>
         <h3><a href="/node/add">+ Ajouter un node</a></h3>
@@ -19,7 +20,7 @@ if(!isset($_SESSION)) {
             </tr>
 
             <?php
-            while($d = $GLOBALS['data']->fetch(PDO::FETCH_OBJ)) {
+            while($d = $data->fetch(PDO::FETCH_OBJ)) {
                 echo '<tr>';
                 echo '  <td> ' . $d->nid . '</td>';
                 echo '  <td><a href="/node/' . $d->nid . '">' . $d->title . '</a></td>';

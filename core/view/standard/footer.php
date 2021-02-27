@@ -4,7 +4,7 @@
     <?php if(isset($GLOBALS['infos']) && is_array($GLOBALS['infos']) && count($GLOBALS['infos'])) {
         echo '<div id="global-bubble">';
         foreach($GLOBALS['infos'] as $msg) {
-            echo '<p class="bubble-' . $msg['type'] .' text-light p-3 mb-3">'. $msg['msg'] . '</p>';
+            if(isset($msg['type'])) echo '<p class="bubble-' . $msg['type'] .' text-light p-3 mb-3">'. $msg['msg'] . '</p>';
         }
         echo '</div>';
     }

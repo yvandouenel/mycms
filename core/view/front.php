@@ -6,11 +6,11 @@ require_once('standard/header.php');
 ?>
     <main class="container">
         <h1>
-            <?= $GLOBALS['data']->title; ?>
+            <?= $data->title; ?>
         </h1>
 
         <?php
-        echo $GLOBALS['data']->body;
+        echo $data->body;
         ?>
     </main>
 

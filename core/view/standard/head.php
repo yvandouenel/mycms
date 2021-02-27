@@ -9,10 +9,11 @@
 
     <title>
         <?php
-        if(!empty($GLOBALS['data']->seo_title)) echo $GLOBALS['data']->seo_title;
-        else if(!empty($GLOBALS['data']->title)) echo $GLOBALS['data']->title;
-        else if(!empty($GLOBALS['title'])) echo $GLOBALS['title'];
+        if(!empty($data->seo_title)) echo $data->seo_title;
+        else if(!empty($data->title)) echo $data->title;
+        else if(isset($page_title) && !empty($page_title)) echo $page_title;
         ?>
     </title>
 </head>
 <body>
+
