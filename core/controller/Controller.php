@@ -42,6 +42,17 @@ class Controller {
     return $data;
   }
 
+  public static function login(&$route) {
+    $data["seo_title"] = "Identification";
+    if (!Model::getUser()) {
+      $route["view_name"] = "admin/login";
+    }
+    else {
+      Model::getAdminMenu();
+    }
+    return $data;
+  }
+
   public static function logout() {
     Model::logoutUser();
     $data["node"] = Model::getNodeByPath("/");
