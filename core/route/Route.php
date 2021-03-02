@@ -5,21 +5,21 @@ class Route {
   private static $routes = [];
 
   public static function addAllRoutes($nodes) {
-    self::add('~^/$~', "get", "front", "displayNode");
+    self::add('~^/$~', "get", "front", "displayFront");
 
     // Routes de login et de logout
-    self::add('~^/login$~', "get", "admin/login", "login");
+    self::add('~^/login$~', "get", "admin/login", "displayLoginForm");
     self::add('~^/logout$~', "get", "front", "logout");
     self::add('~^/login$~', "post", "admin/login_result", "login");
 
     // Routes des nodes en visualisation et en administration
     self::add('~^/node/([0-9]+)/?$~', "get", "node", "displayNode");
-    self::add('~^/node/([0-9]+)/edit$~', "get", "admin/node_edit_form", "node_edit_form");
-    self::add('~^/node/add$~', "get", "admin/node_add_form", "node_add");
-    self::add('~^/node/add$~', "post", "admin/list_node_admin", "node_add");
-    self::add('~^/node/([0-9]+)/delete$~', "get", "admin/list_node_admin", "node_delete");
-    self::add('~^/node/[0-9]+/edited$~', "post", "admin/node_edit_form", "node_submited_form");
-    self::add('~^/list-node-admin$~', "get", "admin/list_node_admin", "list_node_admin");
+    self::add('~^/node/([0-9]+)/edit$~', "get", "admin/node_edit_form", "nodeEditForm");
+    self::add('~^/node/[0-9]+/edited$~', "post", "admin/node_edit_form", "nodeSubmitForm");
+    self::add('~^/node/add$~', "get", "admin/node_add_form", "displayAddForm");
+    self::add('~^/node/add$~', "post", "admin/list_node_admin", "nodeAdd");
+    self::add('~^/node/([0-9]+)/delete$~', "get", "admin/list_node_admin", "nodeDelete");
+    self::add('~^/list-node-admin$~', "get", "admin/list_node_admin", "listNodeAdmin");
 
     // Ajout des routes qui proviennent de la base de données
     while ($d = $nodes->fetch(PDO::FETCH_OBJ)) {
@@ -29,21 +29,15 @@ class Route {
     }
 
   }
-
-
   public static function add($pattern,
                              $method = 'get',
                              $view_name = 'view_standard',
-                             $controller_method = 'view',
-                             $model_parameters = [],
-                             $permission = "all") {
+                             $controller_method = 'view') {
     array_push(self::$routes, [
       'pattern' => $pattern,
       'method' => $method,
       'view_name' => $view_name,
       'controller_method' => $controller_method,
-      'model_parameters' => $model_parameters,
-      'permission' => $permission,
     ]);
   }
 
@@ -66,33 +60,6 @@ class Route {
         // on compare ensuite l'expression régulière
         if (preg_match($route['pattern'], $path)) {
           $path_match_found = TRUE;
-
-          // Cas de l'affichage d'un node ou de l'affichage du formulaire de modification d'un node
-          if (($route["controller_method"] == "displayNode" ||
-              $route["controller_method"] == "node_edit_form") &&
-            $route["method"] == "get" && count($route["model_parameters"]) == 0) {
-            preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
-            if (isset($matches[1][0])) {
-              $route["model_parameters"]["nid"] = $matches[1][0];
-              $route["model_parameters"]["edited"] = FALSE;
-            }
-
-            // Cas de la soumission du formulaire de modification d'un node
-          }
-          else {
-            if ($route["controller_method"] == "node_submited_form" && $route["method"] == "post") {
-              $route["model_parameters"]["nid"] = $_POST["nid"];
-              $route["model_parameters"]["edited"] = TRUE;
-            } // Cas de la suppression d'un node
-            else {
-              if ($route["controller_method"] == "node_delete" && $route["method"] == "get") {
-                preg_match($route["pattern"], $path, $matches, PREG_OFFSET_CAPTURE);
-                if (isset($matches[1][0])) {
-                  $route["model_parameters"]["nid"] = $matches[1][0];
-                }
-              }
-            }
-          }
 
           return $route;
           break;

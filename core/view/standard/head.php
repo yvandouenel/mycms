@@ -8,11 +8,9 @@
     <link href="/css/custom.css" rel="stylesheet" />
 
     <title>
-        <?php
-        if(!empty($data->seo_title)) echo $data->seo_title;
-        else if(!empty($data->title)) echo $data->title;
-        else if(isset($page_title) && !empty($page_title)) echo $page_title;
-        ?>
+      <?php
+      if(!empty($data["seo_title"])) echo $data["seo_title"];
+      ?>
     </title>
 </head>
 <body>

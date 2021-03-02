@@ -188,7 +188,8 @@ class Model {
       //var_dump($_POST['image']);
 
     } catch (PDOException $e) {
-      echo "Pb de requête", $e->getMessage();
+      $GLOBALS['infos'] [] = ["msg" => "Problème de modification en base de données : " .
+        $e->getMessage(), "type" => "warning"];
     }
   }
 
@@ -201,7 +202,8 @@ class Model {
       $req->execute($data);
       return $req->fetch(PDO::FETCH_OBJ);
     } catch (PDOException $e) {
-      echo "Pb de requête", $e->getMessage();
+      $GLOBALS['infos'] [] = ["msg" => "Problème de requête" . $e->getMessage(), "type" => "warning"];
+
     }
   }
 

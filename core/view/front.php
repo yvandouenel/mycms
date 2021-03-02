@@ -6,11 +6,11 @@ require_once('standard/header.php');
 ?>
     <main class="container">
         <h1>
-            <?= $data->title; ?>
+            <?= $data["node"]->title; ?>
         </h1>
 
         <?php
-        echo $data->body;
+        echo $data["node"]->body;
         ?>
     </main>
 

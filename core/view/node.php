@@ -3,26 +3,26 @@ require_once('standard/head.php');
 require_once('standard/header.php');
 // Session
 if(!isset($_SESSION)) {
-    if(!session_start()) echo "Problème de session";
+  if(!session_start()) echo "Problème de session";
 }
 ?>
     <main class="container">
-        <?php if(isset($_SESSION['login']) && $_SESSION['login'])  : ?>
-        <section>
-            <a href="/node/<?= $data->nid; ?>/edit">Modifier</a>
-        </section>
-        <?php endif ?>
-        <?php if(isset($data->image) && !empty($data->image)) : ?>
-            <img style="float:left; margin-right:20px; max-width:45%" src="<?php echo '/images/original/'. $data->image; ?>" alt=""/>
-        <?php endif ?>
+      <?php if(isset($_SESSION['login']) && $_SESSION['login'])  : ?>
+          <section>
+              <a href="/node/<?= $data["node"]->nid; ?>/edit">Modifier</a>
+          </section>
+      <?php endif ?>
+      <?php if(isset($data["node"]->image) && !empty($data["node"]->image)) : ?>
+          <img style="float:left; margin-right:20px; max-width:45%" src="<?php echo '/images/original/'. $data["node"]->image; ?>" alt=""/>
+      <?php endif ?>
         <h1>
-            <?= $data->title; ?>
+          <?= $data["node"]->title; ?>
         </h1>
 
 
-        <?php
-        echo $data->body;
-        ?>
+      <?php
+      echo $data["node"]->body;
+      ?>
     </main>
 
 <?php

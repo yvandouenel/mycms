@@ -20,7 +20,7 @@ if(!isset($_SESSION)) {
             </tr>
 
             <?php
-            while($d = $data->fetch(PDO::FETCH_OBJ)) {
+            while($d = $data["list"]->fetch(PDO::FETCH_OBJ)) {
                 echo '<tr>';
                 echo '  <td> ' . $d->nid . '</td>';
                 echo '  <td><a href="/node/' . $d->nid . '">' . $d->title . '</a></td>';
