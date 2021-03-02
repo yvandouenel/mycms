@@ -100,6 +100,7 @@ class Model {
       $data = [
         'title' => $_POST['title'],
         'seo_title' => $_POST['seo_title'],
+        'summary' => $_POST['summary'],
         'body' => $_POST['body'],
         'image' => $_FILES['image']['name'],
         'path' => $_POST['path'],
@@ -108,6 +109,7 @@ class Model {
       $req = self::$pdo->prepare('INSERT node SET 
                 title = :title, 
                 seo_title = :seo_title, 
+                summary = :summary, 
                 body = :body, 
                 image = :image, 
                 path = :path');
@@ -136,7 +138,17 @@ class Model {
 
   public static function getNodes() {
     try {
-      $sql = 'SELECT * FROM node;';
+      $sql = 'SELECT * FROM node order by nid DESC;';
+      $req = self::$pdo->query($sql);
+
+      return $req;
+    } catch (PDOException $e) {
+      echo "Pb de requête", $e->getMessage();
+    }
+  }
+  public static function getNodesButFront() {
+    try {
+      $sql = 'SELECT * FROM node where path NOT LIKE "/" order by nid DESC;';
       $req = self::$pdo->query($sql);
 
       return $req;
@@ -163,6 +175,7 @@ class Model {
         'nid' => $_POST['nid'],
         'title' => $_POST['title'],
         'seo_title' => $_POST['seo_title'],
+        'summary' => $_POST['summary'],
         'body' => $_POST['body'],
         'path' => $_POST['path'],
       ];
@@ -171,6 +184,7 @@ class Model {
         $req = self::$pdo->prepare('UPDATE node SET 
                 title = :title, 
                 seo_title = :seo_title, 
+                summary = :summary, 
                 body = :body, 
                 image = :image, 
                 path = :path   
@@ -179,6 +193,7 @@ class Model {
         $req = self::$pdo->prepare('UPDATE node SET 
                 title = :title, 
                 seo_title = :seo_title, 
+                summary = :summary,
                 body = :body, 
                 path = :path   
                 WHERE nid = :nid');

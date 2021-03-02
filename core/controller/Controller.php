@@ -2,7 +2,7 @@
 
 class Controller {
 
-  public static function displayNode($route) {
+  public static function displayNode(&$route) {
     $parsed_url = parse_url($_SERVER['REQUEST_URI']);
     $path = isset($parsed_url['path']) ? substr($parsed_url['path'], 1) : '/';
     // on vérifie si la route permet de récupérer directement la donnée ********
@@ -15,12 +15,20 @@ class Controller {
       $nid = self::getNidByUrl($route);
       if ($nid) {
         $data["node"] = Model::getNode($nid);
-        $data["seo_title"] = $data["node"]->seo_title;
+        if($data["node"]) {
+          $data["seo_title"] = $data["node"]->seo_title;
+        } else {
+          $data['seo_title'] = "Erreur 404";
+          $route["view_name"] = "404";
+        }
+      } else {
+        $data['seo_title'] = "Erreur 404";
+        $route["view_name"] = "404";
       }
       // 404
     }
     // si ce node a un alias et qu'il n'est pas utilisé, on redirige
-    if ($data["node"]->path && !preg_match($route["pattern"], "/" . $data["node"]->path)) {
+    if ($data["node"] && $data["node"]->path && !preg_match($route["pattern"], "/" . $data["node"]->path)) {
       if ($data["node"]->path == "/") {
         header("location:/");
       }
@@ -34,6 +42,7 @@ class Controller {
   public static function displayFront($route) {
     $data["node"] = Model::getNodeByPath("/");
     $data["seo_title"] = $data["node"]->seo_title;
+    $data["list"] = Model::getNodesButFront();
     return $data;
   }
 

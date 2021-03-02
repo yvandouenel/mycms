@@ -41,7 +41,7 @@ class Route {
     ]);
   }
 
-  public static function run() {
+  public static function check() {
 
     // Parse l'URL
     $parsed_url = parse_url($_SERVER['REQUEST_URI']);

@@ -15,9 +15,9 @@ Route::addAllRoutes(Model::getNodes());
 Model::getAdminInfo();
 
 /**
- * Récupération de la route
+ * Contrôle et récupération de la route
  */
-$route = Route::run();
+$route = Route::check();
 
 /**
  * Si la route est trouvée, on va chercher la donnée dans le modèle et on
@@ -32,7 +32,7 @@ if ($route) {
   require_once __DIR__ . '/../core/view/' . $route["view_name"] . '.php';
 }
 else {
-  $GLOBALS['title'] = "Erreur 404";
+  $data['seo_title'] = "Erreur 404";
   require_once __DIR__ . '/../core/view/404.php';
 }
 

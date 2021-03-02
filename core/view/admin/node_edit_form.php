@@ -9,20 +9,24 @@ require_once('../core/view/standard/header.php');
         <h1 class="mt-4 mb-4">Modification d'un node</h1>
         <form enctype="multipart/form-data" action="/node/<?= $data["node"]->nid; ?>/edited" method="post" class="">
             <div class="form-group row">
-                <label for="title" class="col-3">Titre</label>
-                <input type="text" class="col-9" id="title" name="title" value="<?= $data["node"]->title; ?>">
+                <label for="title" class="col-3 required">Titre</label>
+                <input type="text" class="col-9" id="title" name="title" value="<?= $data["node"]->title; ?>" required>
             </div>
             <div class="form-group row">
                 <label for="seo_title" class="col-3">Titre pour le référencement</label>
                 <input type="text" class="col-9" id="seo_title" name="seo_title" value="<?= $data["node"]->seo_title; ?>">
             </div>
             <div class="form-group row">
+                <label for="body" class="col-3">Résumé</label>
+                <textarea id="summary" class="col-9" name="summary"><?= $data["node"]->summary; ?></textarea>
+            </div>
+            <div class="form-group row">
                 <label for="body" class="col-3">Corps</label>
                 <textarea id="body" class="col-9" name="body"><?= $data["node"]->body; ?></textarea>
             </div>
             <div class="form-group row">
-                <label for="path" class="col-3">Chemin</label>
-                <input type="text" class="col-9" id="path" name="path" value="<?= $data["node"]->path; ?>">
+                <label for="path" class="col-3 required">Chemin</label>
+                <input type="text" class="col-9" id="path" name="path" value="<?= $data["node"]->path; ?>" required>
             </div>
             <div class="form-group row">
                 <label for="image" class="col-3">Image</label>
