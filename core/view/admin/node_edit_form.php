@@ -35,6 +35,7 @@ require_once('../core/view/standard/header.php');
             <input type="hidden" name="nid" value="<?= $data["node"]->nid; ?>">
 
             <input type="submit" value="Envoyer" class="btn btn-primary mb-2">
+            <a class="btn btn-danger mb-2" href="/node/<?= $data["node"]->nid; ?>/delete">Supprimer</a>
         </form>
 
 <?php else : ?>

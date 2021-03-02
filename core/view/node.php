@@ -10,6 +10,7 @@ if(!isset($_SESSION)) {
       <?php if(isset($_SESSION['login']) && $_SESSION['login'])  : ?>
           <section>
               <a href="/node/<?= $data["node"]->nid; ?>/edit">Modifier</a>
+
           </section>
       <?php endif ?>
       <?php if(isset($data["node"]->image) && !empty($data["node"]->image)) : ?>
